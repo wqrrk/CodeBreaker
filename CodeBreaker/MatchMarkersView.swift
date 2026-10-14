@@ -1,7 +1,7 @@
 // xcode: set sdk=iOS
 
 //
-//  MatchMarkers.swift
+//  MatchMarkersView.swift
 //  CodeBreaker
 //
 //  Created by Wark on 05.10.2026.
@@ -13,7 +13,6 @@ enum Match {
     case nomatch
     case exact
     case inexact
-    
 }
 
 struct MatchMarkersView: View {
@@ -25,11 +24,18 @@ struct MatchMarkersView: View {
                 ForEach(0..<rows, id: \.self) { index in
                     matchMarker(peg: index)
                 }
+                
             }
             
             HStack {
                 ForEach(rows..<matches.count, id: \.self) { index in
                     matchMarker(peg: index)
+                }
+                //using a modificator hidden to draw a circle where there is no match to fix the scaling issue
+                if matches.count % 2 != 0 { //if the count of matches is not even, then generate a hidden circle
+                    Circle()
+                        .hidden()
+                        .aspectRatio(1, contentMode: .fit) //same as in the helicopter view
                 }
             }
         }
@@ -47,5 +53,5 @@ struct MatchMarkersView: View {
 }
 
 #Preview {
-    MatchMarkersView(matches: [.exact, .inexact, .nomatch, .nomatch,.exact, .inexact])
+    MatchMarkersView(matches: [.exact, .inexact, .inexact, .exact, .inexact])
 }
